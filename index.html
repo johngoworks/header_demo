@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black and White Site</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ff9;
+            color: #001;
+        }
+        header {
+            position: fixed;
+            padding: 10px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff;
+            color: #000;
+            display: inline-block;
+            justify-content: center; /*Центрирование по горизонтали*/   
+            height: 160px;
+            transition-duration: 1s;
+            padding-top: 70px;
+        }
+        .logo {
+            margin-top: 1%;
+            border-radius: 50%;
+            transition:ease;
+            transition-duration: 1S;
+            /* margin-left:47%; */
+        }
+        .name {
+            opacity: 1;
+            font-size: 150%;
+            transition-duration:300ms;
+        }
+        .name.hidden {
+            display: none;
+            opacity: 0;
+        }
+        .title {
+            font-size:18px;
+            margin-top:10px;
+            opacity: 0;
+            display: none;
+            padding-inline: 10px;
+            white-space: nowrap;
+        }
+        .title.visible {
+            opacity: 1;
+            display: flex;
+            transition:ease;
+            transition-duration: 1S;
+        }
+        .content {
+            padding-top: 70px;
+            text-align: center;
+        }
+        .buttons_head{
+            display: flex;
+            width: 100% ;
+            opacity: 1;
+            margin-top: 10px;
+            justify-content: center;
+        }
+        .name_div{
+            text-align: center;
+        }
+        .buttons_head.hidden{
+            opacity: 0;
+            display: none;
+        }
+        .buttons_head button{
+            border: none;
+            border-radius: 30px;
+            background-color: #353535;
+            color: white;
+            padding:10px;
+            padding-inline: 15px;
+            margin-inline: 10px;
+        }
+        .logo_div{
+            display: flex;
+            width: 100%;
+            justify-content: center;
+            text-align: center;
+            align-items: center;  
+            transition: ease;
+            transition-duration: 1s;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo_div"><img src="logo.jpg" alt="Logo" class="logo" id="logo" width="50" height="50"><span class="title" id="title">Your Name</span></div>
+        <div class="name_div"><span class="name" id="name">Your Name</span></div>
+        
+        <div class="buttons_head" id="buttons_head">
+            <button>Subcribe</button>
+            <button>Message</button>
+        </div>
+    </header>
+    <div class="content">
+        <h1 style="margin-top:110px;">Welcome to the Black and White Site</h1>
+        <p>Scroll down to see the header animation.</p>
+        <div style="height: 2000px;"></div>
+    </div>
+    <script>
+        const header = document.querySelector('header');
+        const logo = document.getElementById('logo');
+        const name = document.getElementById('name');
+        const title = document.getElementById('title');
+        const buttons_head = document.getElementById('buttons_head');
+        const minSize = 25;
+        const maxSize = 50;
+        const minPad = 20;
+        const maxPad = 70;
+        const minHeight = 100;
+        const maxHeight = 160;
+        // const minLeft = 45;
+        // const maxLeft = 47;
+        let lastScrollTop = 0;
+        let timeout;
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const newSize = Math.max(minSize, maxSize - scrollTop / 12);
+            const newPad = Math.max(minPad, maxPad - scrollTop / 20);
+            const newHeight = Math.max(minHeight, maxHeight - scrollTop / 10);
+            // const newLeft = Math.max(minLeft, maxLeft - scrollTop / 30);
+            logo.style.width = `${newSize}px`;
+            logo.style.height = `${newSize}px`;
+            header.style.paddingTop = `${newPad}px`;
+            header.style.height = `${newHeight}px`;
+            // if (newPad == minPad){
+                // logo.style.marginLeft = `${newLeft}%`;
+            // }
+            if (newPad <= 60) {
+                clearTimeout(timeout);
+                name.classList.add('hidden');
+                buttons_head.classList.add('hidden');
+                timeout = setTimeout(() => {
+                    if (newPad <=30) {
+                        header.style.display = 'flex';
+                        header.style.justifyContent = 'baseline';
+                        title.classList.add('visible');
+                        
+                    } else {
+                        title.classList.remove('visible');
+                        header.style.display = 'inline-block';
+                    }
+                }, 300);
+            } else {
+                title.classList.remove('visible');
+                buttons_head.classList.remove('hidden');
+                name.classList.remove('hidden');
+                header.style.display = 'inline-block';
+                
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+    </script>
+</body>
+</html>
